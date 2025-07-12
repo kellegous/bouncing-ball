@@ -11,4 +11,6 @@ I had already created the vite app using `npm create vite@latest bouncing-ball -
 
 Here's a video of the result,
 
-<video src="bouncing-ball.mp4" width="1496" height="934" controls></video>
+
+<video src="https://github.com/user-attachments/assets/b7f3492e-7d42-4bbd-85c6-069864c1dc20" width="1496" height="934" controls></video>
+
