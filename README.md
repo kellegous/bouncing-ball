@@ -11,6 +11,10 @@ I had already created the vite app using `npm create vite@latest bouncing-ball -
 
 Here's a video of the result,
 
-
 <video src="https://github.com/user-attachments/assets/b7f3492e-7d42-4bbd-85c6-069864c1dc20" width="1496" height="934" controls></video>
 
+## Later Follow-ups
+
+After I published the initial version, I ended up asking cursor to fix some inconsistencies from the original. I also did make a few hand tweaks for things that really didn't make any sense (like a random 4px border that wasn't consistent with other borders).
+
+> In the original, the ball was rendered with 2 images. `@lotto-hi.png` and `@lotto-lo.png`. `@lotto-lo.png` was the image of the ball's surface and was meant to rotate. `@lotto-hi.png` was meant to simulate ambient light and did not rotate with the ball. Can you render the ball using these images? You should make copies of them int the `@/src` directory.

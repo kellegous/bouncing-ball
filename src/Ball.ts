@@ -5,6 +5,11 @@ export class Ball {
   private static readonly SHOW_EDGE_PATH = false;
   private static readonly SHOW_CENTER_PATH = true;
 
+  // Static images shared across all ball instances
+  private static lottoHiImage: HTMLImageElement | null = null;
+  private static lottoLoImage: HTMLImageElement | null = null;
+  private static imagesLoaded = false;
+
   private position: Vector2D;
   private velocity: Vector2D;
   private angularVel: number;
@@ -26,6 +31,30 @@ export class Ball {
     this.angularVel = 0;
     this.orientation = 0;
     this.r = r;
+
+    // Load images if not already loaded
+    if (!Ball.imagesLoaded) {
+      Ball.loadImages();
+    }
+  }
+
+  private static loadImages(): void {
+    Ball.lottoHiImage = new Image();
+    Ball.lottoLoImage = new Image();
+
+    Ball.lottoHiImage.src = new URL("./lotto-hi.png", import.meta.url).href;
+    Ball.lottoLoImage.src = new URL("./lotto-lo.png", import.meta.url).href;
+
+    let loadedCount = 0;
+    const onImageLoad = () => {
+      loadedCount++;
+      if (loadedCount === 2) {
+        Ball.imagesLoaded = true;
+      }
+    };
+
+    Ball.lottoHiImage.onload = onImageLoad;
+    Ball.lottoLoImage.onload = onImageLoad;
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
@@ -62,44 +91,78 @@ export class Ball {
     // Draw ball at position
     ctx.translate(this.position.i, this.position.j);
 
-    // Draw rotating dynamic ball (with pattern to show rotation)
-    ctx.save();
-    ctx.rotate(this.orientation);
+    // If images are loaded, use them; otherwise fallback to canvas drawing
+    if (Ball.imagesLoaded && Ball.lottoHiImage && Ball.lottoLoImage) {
+      // Draw rotating surface image (lotto-lo.png)
+      ctx.save();
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, this.r, 0, Math.PI * 2);
+      ctx.stroke();
 
-    // Draw dynamic ball background
-    ctx.fillStyle = "#4ecdc4";
-    ctx.beginPath();
-    ctx.arc(0, 0, this.r, 0, Math.PI * 2);
-    ctx.fill();
+      ctx.rotate(this.orientation);
+      ctx.drawImage(
+        Ball.lottoLoImage,
+        -this.r,
+        -this.r,
+        this.r * 2,
+        this.r * 2
+      );
+      ctx.restore();
 
-    // Draw rotation pattern
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(0, -this.r);
-    ctx.lineTo(0, this.r);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(-this.r, 0);
-    ctx.lineTo(this.r, 0);
-    ctx.stroke();
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      // Draw ambient light image (lotto-hi.png) - does not rotate
+      ctx.drawImage(
+        Ball.lottoHiImage,
+        -this.r,
+        -this.r,
+        this.r * 2,
+        this.r * 2
+      );
+      ctx.restore();
+    } else {
+      // Fallback to original canvas drawing if images aren't loaded
+      // Draw rotating dynamic ball (with pattern to show rotation)
+      ctx.save();
+      ctx.rotate(this.orientation);
 
-    ctx.restore();
+      // Draw dynamic ball background
+      ctx.fillStyle = "#4ecdc4";
+      ctx.beginPath();
+      ctx.arc(0, 0, this.r, 0, Math.PI * 2);
+      ctx.fill();
 
-    // Draw static ball overlay
-    ctx.fillStyle = "#ff6b6b";
-    ctx.globalAlpha = 0.7;
-    ctx.beginPath();
-    ctx.arc(0, 0, this.r, 0, Math.PI * 2);
-    ctx.fill();
+      // Draw rotation pattern
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, -this.r);
+      ctx.lineTo(0, this.r);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-this.r, 0);
+      ctx.lineTo(this.r, 0);
+      ctx.stroke();
 
-    // Add ball outline
-    ctx.globalAlpha = 1;
-    ctx.strokeStyle = "#333";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(0, 0, this.r, 0, Math.PI * 2);
-    ctx.stroke();
+      ctx.restore();
+
+      // Draw static ball overlay
+      ctx.fillStyle = "#ff6b6b";
+      ctx.globalAlpha = 0.7;
+      ctx.beginPath();
+      ctx.arc(0, 0, this.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Add ball outline
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, this.r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
 
     ctx.restore();
   }
