@@ -8,3 +8,7 @@ I gave cursor the following prompt,
 > In 2006, I wrote a Java Applet that simulated a bouncing ball using a simple model that simulated angular velocity changes on collisions. The code for that applet is in the `@/java` directory. I want to recreate that simulation in an HTML canvas in the vite app. The entry point for the vite app is `@index.html` . Can you port the Java into Typescript?
 
 I had already created the vite app using `npm create vite@latest bouncing-ball -- -template vanilla-ts` and removed most of the placeholder code. What is in this repository is what resulted. It's a pretty good start.
+
+Here's a video of the result,
+
+<video src="bouncing-ball.mp4" width="1496" height="934" controls></video>
