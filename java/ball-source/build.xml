@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="ball" default="jar" basedir=".">
+    <property name="project.bin"    value="bin"/>
+    <property name="project.src"    value="src"/>
+    <property name="project.jar"    value="ball.jar"/>
+    <property name="project.tar"    value="ball-source.tgz"/>
+
+    <target name="init">
+        <mkdir dir="bin"/>
+    </target>
+
+    <target name="javac" depends="init">
+        <javac  srcdir="${project.src}"
+                destdir="${project.bin}"
+                target="1.4"
+                source="1.4"/>
+        <copy todir="${project.bin}">
+            <fileset dir="${project.src}" includes="**/*.png"/>
+        </copy>
+    </target>
+
+    <target  name="jar" depends="javac">
+        <jar    destfile="${project.jar}"
+                basedir="${project.bin}"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${project.bin}"/>
+        <delete file="${project.jar}"/>
+        <delete file="${project.tar}"/>
+    </target>
+
+    <target name="dist">
+        <tar destfile="${project.tar}" compression="gzip">
+            <tarfileset dir="${project.src}" prefix="ball-source/src"/>
+            <tarfileset file="build.xml" prefix="ball-source"/>
+        </tar>
+    </target>
+</project>

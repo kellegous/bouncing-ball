@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.simulation-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.control-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.time-label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.reset-btn {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.reset-btn:hover {
+  background-color: #555;
+}
+
+.panels-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.panel-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-wrapper canvas {
+  border: 2px solid #333;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.panel-wrapper canvas:hover {
+  transform: scale(1.02);
+}
+
+.panel-wrapper:nth-child(2) canvas {
+  border-left: 4px solid #333;
+  border-right: 4px solid #333;
+}
+
+.panel-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  padding: 5px 10px;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1000px) {
+  .panels-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .panel-wrapper canvas {
+    width: 100%;
+    max-width: 400px;
+  }
+}
